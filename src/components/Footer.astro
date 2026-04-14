@@ -1,0 +1,42 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-[var(--color-footer-bg)] text-[var(--color-footer-text)] mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+      <!-- Blog -->
+      <div>
+        <h3 class="font-[var(--font-inter)] text-sm font-semibold uppercase tracking-wider mb-4">Blog</h3>
+        <ul class="space-y-2">
+          <li><a href="/" class="text-[var(--color-footer-muted)] hover:text-white text-sm transition-colors no-underline">All Posts</a></li>
+          <li><a href="/rss.xml" class="text-[var(--color-footer-muted)] hover:text-white text-sm transition-colors no-underline">RSS Feed</a></li>
+        </ul>
+      </div>
+
+      <!-- Community -->
+      <div>
+        <h3 class="font-[var(--font-inter)] text-sm font-semibold uppercase tracking-wider mb-4">Community</h3>
+        <ul class="space-y-2">
+          <li><a href="https://discord.gg/2R2DY37VpE" class="text-[var(--color-footer-muted)] hover:text-white text-sm transition-colors no-underline">Discord</a></li>
+        </ul>
+      </div>
+
+      <!-- More -->
+      <div>
+        <h3 class="font-[var(--font-inter)] text-sm font-semibold uppercase tracking-wider mb-4">More</h3>
+        <ul class="space-y-2">
+          <li><a href="https://www.cirkitdesigner.com" class="text-[var(--color-footer-muted)] hover:text-white text-sm transition-colors no-underline">Home</a></li>
+          <li><a href="https://app.cirkitdesigner.com" class="text-[var(--color-footer-muted)] hover:text-white text-sm transition-colors no-underline">Cirkit Designer IDE</a></li>
+          <li><a href="https://learn.cirkitdesigner.com" class="text-[var(--color-footer-muted)] hover:text-white text-sm transition-colors no-underline">Docs</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-[var(--color-footer-muted)]/20 mt-8 pt-8 text-center">
+      <p class="text-[var(--color-footer-muted)] text-sm">
+        Copyright &copy; {year} Cirkit Design LLC.
+      </p>
+    </div>
+  </div>
+</footer>

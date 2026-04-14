@@ -1,0 +1,56 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags?: string[];
+  slug: string;
+  heroImage?: string;
+}
+
+const { title, description, pubDate, tags, slug, heroImage } = Astro.props;
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<a href={`/blog/${slug}`} class="group block no-underline">
+  <article class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] overflow-hidden transition-shadow hover:shadow-lg">
+    {heroImage && (
+      <div class="overflow-hidden bg-[var(--color-bg-alt)] max-h-64">
+        <img
+          src={heroImage}
+          alt={title}
+          class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+    )}
+    {!heroImage && (
+      <div class="aspect-video bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center">
+        <img src="/images/logo/512x512.png" alt="" class="w-16 h-16 opacity-30 brightness-0 invert" />
+      </div>
+    )}
+    <div class="p-5">
+      <time class="text-xs text-[var(--color-text-secondary)] font-[var(--font-inter)]">
+        {formattedDate}
+      </time>
+      <h2 class="text-lg font-semibold mt-1 mb-2 text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">
+        {title}
+      </h2>
+      <p class="text-sm text-[var(--color-text-secondary)] line-clamp-2 mb-3">
+        {description}
+      </p>
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <span class="font-[var(--font-inter)] text-xs px-2 py-0.5 rounded-full bg-[var(--color-tag-bg)] text-[var(--color-tag-text)]">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  </article>
+</a>

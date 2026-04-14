@@ -1,17 +1,90 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
 
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Blog"
+  description="Product updates, feature announcements, and engineering insights from the Cirkit Designer team."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <!-- Hero -->
+    <div class="text-center mb-14">
+      <div class="inline-block w-12 h-1 rounded-full bg-[var(--color-primary)] mb-6"></div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">Cirkit Designer's Blog</h1>
+      <p class="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+        Design circuits with AI. Simulate real hardware in your browser.
+      </p>
+    </div>
+
+    <!-- Posts -->
+    {posts.length === 0 ? (
+      <p class="text-center text-[var(--color-text-secondary)]">No posts yet. Check back soon!</p>
+    ) : (
+      <div>
+        {/* Featured latest post — full width */}
+        <p class="font-[var(--font-inter)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary)] mb-4">Latest Post</p>
+        <a href={`/blog/${posts[0].id}`} class="group block no-underline mb-10">
+          <article class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] overflow-hidden transition-shadow hover:shadow-lg md:flex md:relative">
+            <div class="md:w-1/2 md:absolute md:inset-y-0 md:left-0 overflow-hidden rounded-l-xl">
+              {posts[0].data.heroImage ? (
+                <img
+                  src={posts[0].data.heroImage}
+                  alt={posts[0].data.title}
+                  class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <div class="w-full h-full min-h-64 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center">
+                  <img src="/images/logo/512x512.png" alt="" class="w-24 h-24 opacity-30 brightness-0 invert" />
+                </div>
+              )}
+            </div>
+            <div class="md:w-1/2 md:ml-auto p-6 sm:p-10 flex flex-col justify-center">
+              <time class="text-xs text-[var(--color-text-secondary)] font-[var(--font-inter)]">
+                {posts[0].data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+              <h2 class="text-2xl sm:text-3xl font-bold mt-2 mb-3 text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">
+                {posts[0].data.title}
+              </h2>
+              <p class="text-[var(--color-text-secondary)] mb-4">
+                {posts[0].data.description}
+              </p>
+              {posts[0].data.tags && posts[0].data.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {posts[0].data.tags.map((tag) => (
+                    <span class="font-[var(--font-inter)] text-xs px-2 py-0.5 rounded-full bg-[var(--color-tag-bg)] text-[var(--color-tag-text)]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <span class="font-[var(--font-inter)] text-sm font-medium text-[var(--color-primary)]">
+                Read more <span class="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+              </span>
+            </div>
+          </article>
+        </a>
+
+        {/* Remaining posts in grid */}
+        {posts.length > 1 && (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {posts.slice(1).map((post) => (
+              <PostCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                tags={post.data.tags}
+                slug={post.id}
+                heroImage={post.data.heroImage}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</BaseLayout>
